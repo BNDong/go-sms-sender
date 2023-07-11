@@ -72,7 +72,7 @@ func (c *GCCPAYClient) SendMessage(param map[string]string, targetPhoneNumber ..
 		return fmt.Errorf("missing parameter: targetPhoneNumber")
 	}
 
-	var reqParams map[string]params
+	reqParams := make(map[string]params)
 
 	// 生成请求参数
 	for _, mobile := range targetPhoneNumber {
@@ -100,7 +100,7 @@ func (c *GCCPAYClient) SendMessage(param map[string]string, targetPhoneNumber ..
 	// 签名
 	timestamp := time.Now().Unix()
 
-	sign := Md5(fmt.Sprintf("%s%s%s", c.clientname, timestamp, c.secret))
+	sign := Md5(fmt.Sprintf("%s%d%s", c.clientname, timestamp, c.secret))
 
 	reqUrl := "https://smscenter.sgate.sa/api/v1/client/sendSms"
 
